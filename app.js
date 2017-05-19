@@ -24,7 +24,24 @@ MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("Connected successfully to server");
     insertDocuments(db, function() {
-        db.close;
+        db.close();
     })
 });
       
+var findDocuments = function(db, callback) {
+    var collection = db.collection('documents');
+    collection.find({}).toArray(function(err, docs) {
+        assert.equal(err, null);
+        console.log("Found the following documents");
+        console.log(docs);
+        callback(docs);
+    });
+}
+
+MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+    console.log("Connection acquired successfully.");
+    findDocuments(db, function() {
+        db.close();
+    });
+});
